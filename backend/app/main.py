@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Union
 from app.Models.Picture import Picture
 from fastapi import FastAPI, UploadFile
@@ -16,6 +17,8 @@ app = FastAPI()
 async def create_upload_file(file: UploadFile):
     filepath = PictureService.calculate_picture_path(file.filename)
     picture = Picture(file.filename, filepath, [])
+
+    PictureService.save_upload_file(file, filepath)
 
     session = DatabaseService.session_factory()
     session.add(picture)
