@@ -1,0 +1,4 @@
+﻿backend/database.db
+backend/app/pictures
+backend/app/__pycache__
+backend/app/Services/__pycache__
