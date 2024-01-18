@@ -1,8 +1,6 @@
-from ast import Str
 import os
 from pathlib import Path
 import shutil
-import string
 from fastapi import UploadFile
 
 class PictureService:
