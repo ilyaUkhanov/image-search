@@ -34,7 +34,6 @@ class MessagingService:
                 for prediction in captions['predictions']:
                     caption = prediction["caption"]
                     tag = Tag(caption)
-                    print(caption)
                     picture.tags.append(tag)
 
             session.commit()    
@@ -45,6 +44,4 @@ class MessagingService:
         channel_request.basic_consume(on_message_callback=on_message_callback, 
                                       auto_ack=True, 
                                       queue=MessagingService.PIPE_NAME)
-
-        print('Listening')
         channel_request.start_consuming() 

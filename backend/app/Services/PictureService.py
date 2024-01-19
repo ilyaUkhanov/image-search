@@ -3,7 +3,6 @@ import shutil
 import os
 import requests
 
-from app.Models.Picture import Picture
 from fastapi import UploadFile
 
 class PictureService:

@@ -3,13 +3,9 @@ import json
 import os
 from pathlib import Path
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy  import select
 from shlex import join
 import threading
-from typing import Union
 from fastapi import FastAPI, UploadFile
-
-import sys
 
 # Import all the Models before the DatabaseService, otherwise the relationships won't work
 # @ref https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/28
@@ -19,8 +15,6 @@ from app.Models.Tag import Tag
 from app.Services.DatabaseService import DatabaseService
 from app.Services.PictureService import PictureService
 from app.Services.MessagingService import MessagingService
-
-print(sys.path)
 
 app = FastAPI()
 
