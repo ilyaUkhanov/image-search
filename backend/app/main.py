@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from shlex import join
 import threading
 from fastapi import FastAPI, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 
 # Import all the Models before the DatabaseService, otherwise the relationships won't work
 # @ref https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/28
@@ -17,6 +18,20 @@ from app.Services.PictureService import PictureService
 from app.Services.MessagingService import MessagingService
 
 app = FastAPI()
+
+# Configuring the CORS Middleware
+origins = [
+    "http://localhost:3000",
+    os.environ.get("FRONTEND_APP_ORIGIN")
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Start the RabbitMQ listener in a separate Thread
 threading.Thread(target=MessagingService.consume_message, daemon=True).start()
