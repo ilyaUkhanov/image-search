@@ -1,6 +1,9 @@
-import os
 from pathlib import Path
 import shutil
+import os
+import requests
+
+from app.Models.Picture import Picture
 from fastapi import UploadFile
 
 class PictureService:
@@ -23,3 +26,10 @@ class PictureService:
                 shutil.copyfileobj(upload_file.file, buffer)
         finally:
             upload_file.file.close()
+    
+    def generate_captions(pictureName, picturePath):
+        files = {'image': (pictureName, open(picturePath,'rb'), 'image/jpeg')}
+        response = requests.post(os.environ.get("IMAGE_CAPTIONS_PREDICTION_ROUTE", 
+                                                "http://127.0.0.1:5000/model/predict"), 
+                                                files=files)
+        return response.json()

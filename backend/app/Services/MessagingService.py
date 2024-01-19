@@ -24,7 +24,16 @@ class MessagingService:
         channel_request.queue_declare(MessagingService.PIPE_NAME)
 
         def on_message_callback(channel, method, properties, body):
-            print(body)
+            id = int(body)
+            session = DatabaseService.session_factory()
+            picture = session.get(Picture, id)
+
+            if(picture is not None):
+                captions = PictureService.generate_captions(picture.filename, picture.path)
+                print(captions)
+
+            session.close()
+            
 
         channel_request.basic_qos(prefetch_count=1) 
         channel_request.basic_consume(on_message_callback=on_message_callback, 
