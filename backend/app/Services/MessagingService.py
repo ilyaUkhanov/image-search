@@ -27,6 +27,7 @@ class MessagingService:
         def on_message_callback(channel, method, properties, body):
             id = int(body)
             session = DatabaseService.session_factory()
+            session.expire_all()
             picture = session.get(Picture, id)
 
             if(picture is not None):
