@@ -21,7 +21,7 @@ app = FastAPI()
 # Start the RabbitMQ listener in a separate Thread
 threading.Thread(target=MessagingService.consume_message, daemon=True).start()
 
-@app.post("/uploadfile/")
+@app.post("/api/pictures/upload/")
 async def create_upload_file(file: UploadFile):
     filepath = PictureService.calculate_picture_path(file.filename)
 
@@ -38,7 +38,7 @@ async def create_upload_file(file: UploadFile):
     return {"filename": file.filename}
 
 # TODO : add date to pictures, so you can orderby pictures
-@app.get("/searchfile/")
+@app.get("/api/pictures/search/")
 async def search_file(search = None, page=0, per_page=10):
     session = DatabaseService.session_factory()
     statement = session.query(Picture.filename).join(Tag, Picture.id == Tag.id, isouter=True)
