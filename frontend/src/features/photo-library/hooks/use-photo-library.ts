@@ -5,13 +5,13 @@ type PhotoLibraryResult = string;
 
 export function usePhotoLibrary(): [
   string[],
-  (query: string) => void,
+  (query: string, currentPage: number) => void,
   (file: File) => Promise<void>
 ] {
   const [results, setResults] = useState<PhotoLibraryResult[]>([]);
 
-  const search = async (query: string) => {
-    setResults(await ApiClient.search(query));
+  const search = async (query: string, currentPage: number) => {
+    setResults(await ApiClient.search(query, currentPage));
   };
 
   const upload = async (file: File) => {
