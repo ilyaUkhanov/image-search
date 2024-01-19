@@ -1,3 +1,4 @@
+from typing import List, Set
 from app.Services.DatabaseService import Base
 
 from sqlalchemy import Column, String, Integer, Table, ForeignKey
@@ -9,7 +10,7 @@ class Picture(Base):
     id = Column(Integer, primary_key=True)
     filename = Column(String)
     path = Column(String)
-    tags = relationship("Tag", back_populates="picture")
+    tags: Mapped[List["Tag"]] = relationship("Tag", back_populates="picture")
 
     def __init__(self, filename, path, tags):
         self.filename = filename

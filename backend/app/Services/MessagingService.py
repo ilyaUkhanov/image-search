@@ -1,6 +1,7 @@
 import os
 import pika
 from app.Models.Picture import Picture
+from app.Models.Tag import Tag
 from app.Services.DatabaseService import DatabaseService
 from app.Services.PictureService import PictureService
 
@@ -30,8 +31,13 @@ class MessagingService:
 
             if(picture is not None):
                 captions = PictureService.generate_captions(picture.filename, picture.path)
-                print(captions)
+                for prediction in captions['predictions']:
+                    caption = prediction["caption"]
+                    tag = Tag(caption)
+                    print(caption)
+                    picture.tags.append(tag)
 
+            session.commit()    
             session.close()
             
 

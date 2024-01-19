@@ -2,7 +2,6 @@ from functools import partial
 from pathlib import Path
 import threading
 from typing import Union
-from app.Models.Picture import Picture
 from fastapi import FastAPI, UploadFile
 
 import sys
