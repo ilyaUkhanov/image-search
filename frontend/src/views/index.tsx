@@ -27,6 +27,7 @@ function App() {
             style={{ backgroundImage: `url(${url})` }}
           />
         ))}
+        {results.length === 0 && <p>No pictures found, please add more or change your search request</p>}
       </div>
     </div>
   );
