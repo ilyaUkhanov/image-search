@@ -38,13 +38,10 @@ threading.Thread(target=MessagingService.consume_message, daemon=True).start()
 
 # A mount that serves the uploaded pictures to the frontend
 Path(PictureService.calculate_picture_folder()).mkdir(parents=True, exist_ok=True)
-
 app.mount(
     os.environ.get("PICTURES_MOUNT_URL", "/pictures"),
     StaticFiles(directory=PictureService.calculate_picture_folder()), name="pictures"
 )
-
-# "app/" + os.environ.get("PICTURES_FOLDER_RELATIVE_PATH", "pictures")
 
 @app.post("/api/pictures/upload/")
 async def create_upload_file(file: UploadFile):
