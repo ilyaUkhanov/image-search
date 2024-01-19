@@ -5,7 +5,7 @@ export const SearchBar = ({
   onSearch,
   onUpload,
 }: {
-  onSearch: (search: string) => Promise<void>;
+  onSearch: (search: string) => void;
   onUpload: (file: File) => Promise<void>;
 }) => {
   const [search, setSearch] = useState("");
@@ -15,7 +15,7 @@ export const SearchBar = ({
     delayRequest("search", () => {
       onSearch(search);
     });
-  }, [search, onSearch]);
+  }, [search]);
 
   const chooseFile = () => {
     const input = document.createElement("input");
@@ -39,7 +39,7 @@ export const SearchBar = ({
           className="bg-gray-200 outline-none text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           placeholder="Search photos, objects..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => { setSearch(e.target.value) }}
         />
       </div>
       <button

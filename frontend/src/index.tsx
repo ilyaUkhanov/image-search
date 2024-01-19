@@ -4,8 +4,6 @@ import App from "./views";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
-require('dotenv').config()
-
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
