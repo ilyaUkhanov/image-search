@@ -7,6 +7,7 @@ from shlex import join
 import threading
 from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import desc
 
 # Import all the Models before the DatabaseService, otherwise the relationships won't work
 # @ref https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/28
@@ -70,7 +71,7 @@ async def search_file(search = None, page=0, per_page=10):
         statement = statement.where( Picture.tags.any(Tag.name.contains(search)) )
 
     # Pagination of the query
-    statement = statement.limit(limit=per_page).offset(page*per_page)
+    statement = statement.order_by(desc(Picture.creation_date)).limit(limit=per_page).offset(page*per_page)
     
     pictures = session.execute(statement).all()
     result = []

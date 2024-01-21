@@ -5,6 +5,7 @@ from app.Models.Tag import Tag
 from app.Services.DatabaseService import DatabaseService
 from app.Services.PictureService import PictureService
 
+# TODO make connection more solid - retry & reconnect
 class MessagingService:
     PIPE_NAME = "pipe_picture_annotation"
 
