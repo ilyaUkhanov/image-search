@@ -1,4 +1,3 @@
-from functools import partial
 import json
 import os
 from pathlib import Path
@@ -17,12 +16,14 @@ from app.Models.Tag import Tag
 from app.Services.DatabaseService import DatabaseService
 from app.Services.PictureService import PictureService
 from app.Services.MessagingService import MessagingService
+from app.Services.MQConsumer import ReconnectingExampleConsumer
 
 app = FastAPI()
 
 # Configuring the CORS Middleware
 origins = [
     "http://localhost:3000",
+    "http://127.0.0.1:3000",
     os.environ.get("FRONTEND_APP_ORIGIN")
 ]
 
@@ -35,7 +36,13 @@ app.add_middleware(
 )
 
 # Start the RabbitMQ listener in a separate Thread
-threading.Thread(target=MessagingService.consume_message, daemon=True).start()
+def start_mq_consumer():
+    amqp_url = 'amqp://guest:guest@localhost:5672/%2F'
+    consumer = ReconnectingExampleConsumer(amqp_url)
+    consumer.run(MessagingService.on_picture_annotation)
+
+# MessagingService.consume_message
+threading.Thread(target=start_mq_consumer, daemon=True).start()
 
 # A mount that serves the uploaded pictures to the frontend
 Path(PictureService.calculate_picture_folder()).mkdir(parents=True, exist_ok=True)
@@ -56,11 +63,11 @@ async def create_upload_file(file: UploadFile):
     session.commit()
 
     MessagingService.send_message(str(picture.id))
+
     session.close()
 
     return {"filename": file.filename}
 
-# TODO : add date to pictures, so you can orderby pictures
 @app.get("/api/pictures/search/")
 async def search_file(search = None, page=0, per_page=10):
     session = DatabaseService.session_factory()
