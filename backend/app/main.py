@@ -16,7 +16,7 @@ from app.Models.Tag import Tag
 from app.Services.DatabaseService import DatabaseService
 from app.Services.PictureService import PictureService
 from app.Services.MessagingService import MessagingService
-from app.Services.MQConsumer import ReconnectingExampleConsumer
+from app.Services.MQConsumer import ReconnectingMQConsumer
 
 app = FastAPI()
 
@@ -38,7 +38,7 @@ app.add_middleware(
 # Start the RabbitMQ listener in a separate Thread
 def start_mq_consumer():
     amqp_url = 'amqp://guest:guest@localhost:5672/%2F'
-    consumer = ReconnectingExampleConsumer(amqp_url)
+    consumer = ReconnectingMQConsumer(amqp_url)
     consumer.run(MessagingService.on_picture_annotation)
 
 # MessagingService.consume_message
